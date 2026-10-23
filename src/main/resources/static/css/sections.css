@@ -74,3 +74,8 @@
 }
 .ph-hero { border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
 .ph-banner { border-left: 1px solid var(--color-border); }
+
+/* 휴대폰 폭: .section 의 padding: 10px 0 이 .container 좌우 여백을 덮어써 제목·카드가 화면 끝에 붙던 것 보정 (데스크톱은 그대로) */
+@media (max-width: 640px) {
+  .section.container { padding-left: 12px; padding-right: 12px; }
+}

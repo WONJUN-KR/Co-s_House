@@ -17,6 +17,7 @@
     <nav class="navbar" aria-label="주요 메뉴">
       <div class="nav-container">
         <a th:href="@{/}" class="logo">코딩의집</a>
+        <button type="button" class="nav-toggle" aria-label="메뉴 열기" aria-expanded="false" aria-controls="navUserActions"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
         <ul class="nav-menu">
           <li><a th:href="@{/product}" th:classappend="${#httpServletRequest != null and #strings.startsWith(#httpServletRequest.requestURI, '/product')} ? 'is-active' : ''">쇼핑</a></li>
             <li>
@@ -53,7 +54,7 @@
               <img th:src="@{/images/고객센터.png}" alt="고객센터" class="icon-img" />
             </a>
           </div>
-          <div class="user-actions" data-auth-state="${session.user != null ? 'logged-in' : 'logged-out'}">
+          <div class="user-actions" id="navUserActions" data-auth-state="${session.user != null ? 'logged-in' : 'logged-out'}">
             <span class="auth-links auth-guest" th:classappend="${session.user != null} ? ' is-hidden'">
               <a th:href="@{/controller/register/login}" class="link-auth">로그인</a>
               <a th:href="@{/account/register}" class="link-auth primary">회원가입</a>
@@ -70,35 +71,45 @@
         </div>
       </div>
     </nav>
-  </header>
+    <!-- 헤더 높이 → --header-offset · 휴대폰 메뉴 토글. header fragment 안에 있어야 각 페이지에 같이 포함됨 -->
+    <script>
+      (function () {
+        var header = document.querySelector('.site-header');
+        if (!header || !document.body) {
+          return;
+        }
 
-  <script>
-    (function () {
-      var header = document.querySelector('.site-header');
-      if (!header || !document.body) {
-        return;
-      }
+        function updateHeaderOffset() {
+          document.body.style.setProperty('--header-offset', header.offsetHeight + 'px');
+        }
 
-      function updateHeaderOffset() {
-        document.body.style.setProperty('--header-offset', header.offsetHeight + 'px');
-      }
+        if (window.ResizeObserver) {
+          var observer = new ResizeObserver(function () {
+            updateHeaderOffset();
+          });
+          observer.observe(header);
+        }
 
-      if (window.ResizeObserver) {
-        var observer = new ResizeObserver(function () {
+        // 휴대폰 폭: 로그인·마이페이지·글쓰기는 메뉴 버튼으로 펼침 (데스크톱은 버튼이 숨겨져 영향 없음)
+        var toggle = header.querySelector('.nav-toggle');
+        if (toggle) {
+          toggle.addEventListener('click', function () {
+            var open = header.classList.toggle('nav-open');
+            toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+            toggle.setAttribute('aria-label', open ? '메뉴 닫기' : '메뉴 열기');
+          });
+        }
+
+        window.addEventListener('resize', updateHeaderOffset, { passive: true });
+        window.addEventListener('load', updateHeaderOffset, { once: true });
+        if (document.readyState === 'loading') {
+          window.addEventListener('DOMContentLoaded', updateHeaderOffset, { once: true });
+        } else {
           updateHeaderOffset();
-        });
-        observer.observe(header);
-      }
-
-      window.addEventListener('resize', updateHeaderOffset, { passive: true });
-      window.addEventListener('load', updateHeaderOffset, { once: true });
-      if (document.readyState === 'loading') {
-        window.addEventListener('DOMContentLoaded', updateHeaderOffset, { once: true });
-      } else {
-        updateHeaderOffset();
-      }
-    })();
-  </script>
+        }
+      })();
+    </script>
+  </header>
 
   <script>
     (function () {

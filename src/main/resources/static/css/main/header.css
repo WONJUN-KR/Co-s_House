@@ -543,3 +543,103 @@
         }
     }
 }
+
+/* 휴대폰 폭(768px 이하): 고정 헤더가 화면 절반을 덮지 않게 한 줄 + 검색 + 가로 메뉴로 압축,
+   로그인·마이페이지·글쓰기는 메뉴 버튼으로 펼침. 768px 초과(태블릿·데스크톱)는 기존 그대로 */
+.site-header .nav-toggle {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .site-header .header-banner {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+
+    .site-header .navbar {
+        padding: 8px 0;
+    }
+
+    .site-header .nav-container {
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px 12px;
+        padding: 0 12px;
+    }
+
+    .site-header .navbar .logo {
+        order: 1;
+        font-size: 20px;
+    }
+
+    /* 검색·아이콘·회원 영역을 nav-container 의 직접 자식처럼 배치 */
+    .site-header .nav-right {
+        display: contents;
+    }
+
+    .site-header .nav-icons {
+        order: 2;
+        margin-left: auto;
+        gap: 4px;
+    }
+
+    .site-header .nav-icon {
+        width: 40px;
+        height: 40px;
+    }
+
+    .site-header .nav-toggle {
+        order: 3;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border: 0;
+        border-radius: 8px;
+        background: transparent;
+        color: #333;
+        font-size: 20px;
+        cursor: pointer;
+    }
+
+    .site-header .search-container {
+        order: 4;
+        width: 100%;
+    }
+
+    .site-header .search-input-global {
+        width: 100%;
+    }
+
+    .site-header .nav-menu {
+        order: 5;
+        width: 100%;
+        flex-direction: row;
+        justify-content: flex-start;
+        gap: 20px;
+        overflow-x: auto;
+    }
+
+    .site-header .user-actions {
+        order: 6;
+        display: none;
+        width: 100%;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        padding-top: 8px;
+        border-top: 1px solid #eee;
+    }
+
+    .site-header.nav-open .user-actions {
+        display: flex;
+    }
+
+    .site-header .auth-links {
+        flex-direction: row;
+        gap: 12px;
+    }
+}
