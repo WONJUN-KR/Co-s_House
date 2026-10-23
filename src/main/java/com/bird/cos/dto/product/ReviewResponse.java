@@ -32,6 +32,8 @@ public class ReviewResponse {
     // 옵션 정보 추가
     private Long optionId;
     private String optionName;  // 옵션명 혹은 옵션식별용
+    private String optionValue;
+    private String productName;  // 마이페이지 리뷰 목록 '상품정보' 칸 표시용
 
     public ReviewResponse(Long reviewId, String userNickname, String title, BigDecimal rating, String content,
                           Boolean isVerifiedPurchase, Boolean isPhotoReview, LocalDateTime createdAt,
@@ -68,6 +70,10 @@ public class ReviewResponse {
         );
         if (review.getProduct() != null) {
             response.setProductId(review.getProduct().getProductId());
+            response.setProductName(review.getProduct().getProductTitle());
+        }
+        if (productOption != null) {
+            response.setOptionValue(productOption.getOptionValue());
         }
         // 이미지 URL 목록 매핑 (저장된 파일명 -> 접근 가능한 URL)
         if (review.getReviewImages() != null && !review.getReviewImages().isEmpty()) {
